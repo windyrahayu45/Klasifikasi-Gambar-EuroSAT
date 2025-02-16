@@ -14,7 +14,7 @@
     <script>
         async function loadModel() {
             console.log("Loading model...");
-            const model = await tf.loadLayersModel("submission/tfjs_model/model.json");
+            const model = await tf.loadLayersModel("./tfjs_model/model.json");  // Perbaiki path
             console.log("Model loaded successfully!");
             return model;
         }
@@ -30,14 +30,14 @@
 
                 // Convert image to tensor
                 const tensor = tf.browser.fromPixels(img)
-                    .resizeNearestNeighbor([64, 64])
+                    .resizeNearestNeighbor([64, 64]) 
                     .toFloat()
                     .expandDims();
 
-                // Predict
-                const prediction = model.predict(tensor);
+                // Predict dengan await
+                const prediction = await model.predict(tensor);
                 const result = prediction.argMax(-1).dataSync()[0];
-                
+
                 document.getElementById("prediction").innerText = `Predicted Class: ${result}`;
             };
         }
